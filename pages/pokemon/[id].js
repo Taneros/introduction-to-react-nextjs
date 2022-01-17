@@ -9,18 +9,25 @@ import {
 import styled from "@emotion/styled";
 import { withRouter } from "next/router";
 
-import store from "../../src/store";
-
 const Container = styled.div`
   margin: auto;
   width: 800px;
   paddingtop: 1rem;
 `;
 
-export default withRouter(({ router }) => {
-  const pokemon = store.pokemon.find(
-    ({ id }) => id.toString() === router.query.id
+export async function getServerSideProps(context) {
+  const allPokemon = await (
+    await fetch("http://localhost:3000/pokemon.json")
+  ).json();
+  const pokemon = allPokemon.find(
+    ({ id }) => id.toString() === context.query.id
   );
+  return {
+    props: { pokemon },
+  };
+}
+
+export default withRouter(({ pokemon }) => {
   return (
     <Container>
       <CssBaseline />

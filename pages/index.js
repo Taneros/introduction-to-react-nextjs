@@ -3,6 +3,7 @@ import PokemonInfo from "../components/PokemonInfo";
 import PokemonFilter from "../components/PokemonFilter";
 import PokemonTable from "../components/PokemonTable";
 import { CssBaseline } from "@mui/material";
+import store from "../src/store";
 
 const Title = styled.h1`
   text-align: center;
@@ -20,18 +21,30 @@ const Container = styled.div`
   paddingtop: 1rem;
 `;
 
-const Home = () => (
-  <Container>
-    <CssBaseline />
-    <Title>Pokemon Search App</Title>
-    <TwoColumnLayout>
-      <div>
-        <PokemonFilter />
-        <PokemonTable />
-      </div>
-      <PokemonInfo />
-    </TwoColumnLayout>
-  </Container>
-);
+export async function getServerSideProps() {
+  const pokemon = await (
+    await fetch("http://localhost:3000/pokemon.json")
+  ).json();
+  return {
+    props: { pokemon },
+  };
+}
+
+const Home = ({ pokemon }) => {
+  store.setPokemon(pokemon);
+  return (
+    <Container>
+      <CssBaseline />
+      <Title>Pokemon Search App</Title>
+      <TwoColumnLayout>
+        <div>
+          <PokemonFilter />
+          <PokemonTable />
+        </div>
+        <PokemonInfo />
+      </TwoColumnLayout>
+    </Container>
+  );
+};
 
 export default Home;
