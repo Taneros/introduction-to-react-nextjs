@@ -21,17 +21,7 @@ const Container = styled.div`
   paddingtop: 1rem;
 `;
 
-export async function getServerSideProps() {
-  const pokemon = await (
-    await fetch("http://localhost:3000/pokemon.json")
-  ).json();
-  return {
-    props: { pokemon },
-  };
-}
-
-const Home = ({ pokemon }) => {
-  store.setPokemon(pokemon);
+const Home = () => {
   return (
     <Container>
       <CssBaseline />

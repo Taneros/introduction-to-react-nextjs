@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class Store {
-  pokemon = [];
+  pokemon = require("./pokemon.json");
   filter = "";
   selectedPokemon = null;
 
